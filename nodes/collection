@@ -14,10 +14,12 @@ from testbed.srv import Plot_points, Reset_plots
 # import testbed.srv.plot_points
 # import testbed.srv.reset_plots
 from std_srvs.srv import Empty, EmptyResponse
-import geometry_msgs
-from geometry_msgs.msg import TransformStamped 
+# import geometry_msgs
+# from geometry_msgs.msg import TransformStamped 
 from tf2_msgs.msg import TFMessage
 import matplotlib.pyplot as plt
+
+Height_offset = 0.25
 
 
 class GetData(object):
@@ -35,12 +37,35 @@ class GetData(object):
         rospy.Subscriber("/camera/aligned_depth_to_color/image_raw", Image, self.callback_depth) # Use this for depth data
 
         self.time_array = ['Time']
-        self.x_array = ['x-axis']
-        self.y_array = ['y-axis']
-        self.z_array = ['z-axis']
+        self.x_bro_array = ['x-axis']
+        self.y_bro_array = ['y-axis']
+        self.z_bro_array = ['z-axis']
+        self.x_ref_array = ['x_ref-axis']
+        self.y_ref_array = ['y_ref-axis']
+        self.z_ref_array = ['z_ref-axis']
+        self.x_disp_array = ['x_disp-axis']
+        self.y_disp_array = ['y_disp-axis']
+        self.z_disp_array = ['z_disp-axis']
+
+        self.z_bro_array = ['self.bro_z']
+        self.z_ref_array = ['self.ref_z']
+        self.y_bro_array = ['self.bro_y']
+        self.y_ref_array = ['self.ref_y']
+        self.z_displacement_array = ['displacement z']
+        self.y_displacement_array = ['displacement y']
+        self.potential_diff = ['Potential diff']
+        self.potential_loss = 0
+        self.prev = Height_offset
 
         self.time_flag = False
         self.time_offset = 0.0
+
+        self.bro_x = 0.0
+        self.bro_y = 0.0
+        self.bro_z = 0.0
+        self.ref_x = 0.0
+        self.ref_y = 0.0
+        self.ref_z = 0.0
 
         rospy.Subscriber("/tf",TFMessage, self.tag_callback)
 
@@ -69,23 +94,34 @@ class GetData(object):
             with open('../classes/projects/op3/testbed/apriltag_try/src/testbed/plots/'+data.plot_name+'.csv',"w+") as plotfile:
                 plot_writer = csv.writer(plotfile,delimiter=',')#,delimiter=' ',quotechar='|',quoting=csv.QUOTE_MINIMAL)
                 # plot_writer.writerow(header)
-                # print(self.x_array)
+                # print(self.x_bro_array)
                 plot_writer.writerow(self.time_array)
-                plot_writer.writerow(self.x_array)
+                plot_writer.writerow(self.x_bro_array)
                 # plot_writer.writerow(header)
                 
-                plot_writer.writerow(self.y_array)
-                plot_writer.writerow(self.z_array)
-            rospy.loginfo("")
+                plot_writer.writerow(self.y_bro_array)
+                plot_writer.writerow(self.z_bro_array)
+
+                plot_writer.writerow(self.x_disp_array)
+                plot_writer.writerow(self.y_disp_array)
+                plot_writer.writerow(self.z_disp_array)
+                plot_writer.writerow(self.potential_diff)
+
+                plot_writer.writerow(["Potential loss",float(self.potential_loss)])
+                # plot_writer.writerow(self.y_disp_array)
+
+                
+            rospy.loginfo("plotted")
         except:
             rospy.logwarn('Error with plotting')
+        return EmptyResponse()
 
     def quick_plot(self,req):
 
         fig, ax = plt.subplots(3) 
-        ax[0].plot(self.time_array, self.x_array, label = 'x-axis')
-        ax[1].plot(self.time_array, self.y_array, label = 'y-axis')
-        ax[2].plot(self.time_array, self.z_array, label = 'z-axis')
+        ax[0].plot(self.x_bro_array, label = 'x-axis')
+        ax[1].plot(self.y_bro_array, label = 'y-axis')
+        ax[2].plot(self.z_bro_array, label = 'z-axis')
 
         
         ax[0].legend()
@@ -101,6 +137,27 @@ class GetData(object):
         ax[2].set_ylabel("Z")
         fig.suptitle("Hip Tracking")
 
+        fig2, ax2 = plt.subplots(3) 
+        ax2[0].plot( self.z_bro_array, label = 'z of hip')
+        ax2[1].plot(self.z_ref_array, label = 'z of reference')
+        ax2[2].plot(self.z_disp_array, label = 'hip displacement')
+
+        
+        ax2[0].legend()
+        ax2[1].legend()
+        ax2[2].legend()
+        
+       
+        ax2[0].set_xlabel("Time")
+        ax2[0].set_ylabel("Height (m)")
+        ax2[1].set_xlabel("Time")
+        ax2[1].set_ylabel("Height (m)")
+        ax2[2].set_xlabel("Time")
+        ax2[2].set_ylabel("Height (m)")
+        fig2.suptitle("Hip Tracking")
+
+
+
         # fig3, ax3 = plt.subplots()
         # ax3.plot(x,y)
         plt.show()
@@ -111,9 +168,25 @@ class GetData(object):
 
     def reset_plots(self,req):
         self.time_array = ['Time']
-        self.x_array = ['x-axis']
-        self.y_array = ['y-axis']
-        self.z_array = ['z-axis']
+        self.x_bro_array = ['x-axis']
+        self.y_bro_array = ['y-axis']
+        self.z_bro_array = ['z-axis']
+        self.x_ref_array = ['x_ref-axis']
+        self.y_ref_array = ['y_ref-axis']
+        self.z_ref_array = ['z_ref-axis']
+        self.x_disp_array = ['x_disp-axis']
+        self.y_disp_array = ['y_disp-axis']
+        self.z_disp_array = ['z_disp-axis']
+
+        self.z_bro_array = ['self.bro_z']
+        self.z_ref_array = ['self.ref_z']
+        
+        self.y_bro_array = ['self.bro_y']
+        self.y_ref_array = ['self.ref_y']
+        self.z_displacement_array = ['displacement z']
+        self.y_displacement_array = ['displacement y']
+        self.potential_diff = ['Potential diff']
+
         self.time_flag = False
         self.time_offset = 0.0
 
@@ -134,43 +207,66 @@ class GetData(object):
            None
         """
         
-        for tf in data.tf:
+        for tf in data.transforms:
             rospy.loginfo('Detected '+tf.child_frame_id)
 
-            if(tf.child_frame_id == 'Tag69'):
+            if(tf.child_frame_id == 'Tag1'):
                 
                 bro_time = tf.header.stamp.secs + (tf.header.stamp.nsecs * 0.000000001) - self.time_offset
                 if self.time_flag == False:
                     self.time_offset = bro_time
                     self.time_flag = True
-                bro_x = tf.transform.translation.x
-                bro_y = tf.transform.translation.y
-                bro_z = tf.transform.translation.z
-                self.x_array.append(float(bro_x))
-                self.y_array.append(float(bro_y))
-                self.z_array.append(float(bro_z))
+                self.bro_x = tf.transform.translation.x
+                self.bro_y = tf.transform.translation.y
+                self.bro_z = tf.transform.translation.z
+                self.x_bro_array.append(float(self.bro_x))
+                self.y_bro_array.append(float(self.bro_y))
+                self.z_bro_array.append(float(self.bro_z))
                 self.time_array.append(float(bro_time))
-                print("bro_x = ",bro_x,", bro_y = ",bro_y,", bro_z = ",bro_z)
+
+                self.x_disp_array.append(float( self.ref_x- self.bro_x))
+                self.y_disp_array.append(float( self.ref_y- self.bro_y + Height_offset))
+                self.z_disp_array.append(float( self.ref_z- self.bro_z))
+
+                self.potential_diff.append(float(self.ref_y- self.bro_y + Height_offset - self.prev))
+                self.potential_loss +=  abs(self.ref_y- self.bro_y + Height_offset - self.prev)
+
+                self.prev = self.ref_y- self.bro_y + Height_offset
+
+
+                print("self.bro_x = ",self.bro_x,", self.bro_y = ",self.bro_y,", self.bro_z = ",self.bro_z)
+
             
-            if(tf.child_frame_id == 'Tag420'):         
+            if(tf.child_frame_id == 'Tag2'):         
                 
-                start_x = tf.transform.translation.x
-                start_y = tf.transform.translation.y
-                start_z = tf.transform.translation.z
-                self.x_array.append(float(start_x))
-                self.y_array.append(float(start_y))
-                self.z_array.append(float(start_z))
-                print("start_x = ",start_x,", start_y = ",start_y,", start_z = ",start_z)
+                self.ref_x = tf.transform.translation.x
+                self.ref_y = tf.transform.translation.y
+                self.ref_z = tf.transform.translation.z
+                self.x_ref_array.append(float(self.ref_x))
+                self.y_ref_array.append(float(self.ref_y))
+                self.z_ref_array.append(float(self.ref_z))
+                print("self.ref_x = ",self.ref_x,", self.ref_y = ",self.ref_y,", self.ref_z = ",self.ref_z)
             
-            if(tf.child_frame_id == 'Tag421'):         
+            # if(tf.child_frame_id == 'Tag421'):         
                 
-                fin_x = tf.transform.translation.x
-                fin_y = tf.transform.translation.y
-                fin_z = tf.transform.translation.z
-                self.x_array.append(float(fin_x))
-                self.y_array.append(float(fin_y))
-                self.z_array.append(float(fin_z))
-                print("fin_x = ",fin_x,", fin_y = ",fin_y,", fin_z = ",fin_z)
+            #     fin_x = tf.transform.translation.x
+            #     fin_y = tf.transform.translation.y
+            #     fin_z = tf.transform.translation.z
+            #     self.x_bro_array.append(float(fin_x))
+            #     self.y_bro_array.append(float(fin_y))
+            #     self.z_bro_array.append(float(fin_z))
+            #     print("fin_x = ",fin_x,", fin_y = ",fin_y,", fin_z = ",fin_z)
+            
+            # self.z_bro_array = ['self.bro_z']
+            # self.z_ref_array = ['self.ref_z']
+            # self.z_displacement_array = ['displacement']
+
+
+            
+
+
+            
+
         
         
         
@@ -190,79 +286,6 @@ class GetData(object):
         cv2.imshow("Image", img)
         cv2.waitKey(3)
     
-    def draw_cont(self,img):
-        """ 
-        Function:
-            Draws contours of the red ball as well as a circle and rectangle on the ball in the color video stream
-        Args:
-            img- The color video stream
-        Returns:
-           None
-        """
-        #Convert image to HSV
-        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-        #Range of HSV values for red
-        lower_range = np.array([0, 225, 163])
-        upper_range = np.array([20, 255, 226])
-        #Create mask based on HSV ranges and then dilate and blur
-        mask = cv2.inRange(hsv, lower_range, upper_range) 
-        kernel = np.ones((7,7), np.uint8)
-        mask = cv2.dilate(mask, kernel, iterations=3)
-        blur = cv2.GaussianBlur(mask,(5,5),0)
-
-        
-        #Draw contours based on blurred mask
-        contours, hierarchy = cv2.findContours(blur,cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-        try:
-            #Find the largest contour
-            cnt = max(contours,key=cv2.contourArea)
-            
-            #Create moment of largest contour
-            M = cv2.moments(cnt)
-
-            if len(cnt) > 20:
-                #Create a flag for the ball being in frame and set it to 1
-                self.ball_flag = 1
-                #Find centroid of contour
-                self.cx = int(M['m10']/M['m00'])
-                self.cy = int(M['m01']/M['m00'])
-                #Create a circle and rectangle on the ball
-                cv2.circle(img, (self.cx,self.cy), 5, (150,50,100), -1)
-                cv2.rectangle(img, (self.cx-25, self.cy-25), (self.cx+25, self.cy+25), (150,50,100), 3)
-            else:
-                #Indicate that the ball flag is 0 and so the ball is not in frame
-                self.ball_flag = 0
-        except:
-            #Indicate that the ball flag is 0 and so the ball is not in frame
-            self.ball_flag = 0
-            pass
-        # return ball_state
-                
-    def xyz_from_intrin(self,img,cx,cy):
-        """ 
-        Function: Creates x,y,z coordiantes from the centoid coordinates and publishes them to the topic Xy_depth with the ball_flag state
-        Args:
-            img- The depth video stream 
-            cx- the x value of the centroid
-            cy- the y value of the centroid
-        Returns:
-           None
-        """
-        
-        result = rs.rs2_deproject_pixel_to_point(self.intrinsics, [cx,cy], img[cy,cx]*0.001)
-        print(result)
-
-        # Assemble message to publish x, y, depth data and the ball flag
-        # msg = Xy_depth()
-        # msg.x = result[0]
-        # msg.y = result[1]
-        # msg.depth = result[2]
-        # msg.flag = self.ball_flag
-        # #Publish x, y, and depth data
-        # self.pub.publish(msg)
-
-
     def get_info(self,data):  
         """ 
         Function: Callback function for geting camera information for intrinsics 
@@ -295,7 +318,7 @@ class GetData(object):
         #convert to RGB
         color_img = cv2.cvtColor(color_img, cv2.COLOR_BGR2RGB)
         #Call the draw contour function
-        result = self.draw_cont(color_img)
+        # result = self.draw_cont(color_img)
         # coords = self.xyz_from_intrin(self.depth_image,self.cx,self.cy)
         #Show the color image with contours
         # self.show_img(color_img)

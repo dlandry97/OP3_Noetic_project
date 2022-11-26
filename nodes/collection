@@ -186,6 +186,7 @@ class GetData(object):
         self.z_displacement_array = ['displacement z']
         self.y_displacement_array = ['displacement y']
         self.potential_diff = ['Potential diff']
+        self.potential_loss = 0.0
 
         self.time_flag = False
         self.time_offset = 0.0

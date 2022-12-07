@@ -3,12 +3,19 @@ This is a guide to update the Robotis OP3 robot to ROS Noetic.
 
 # Clonezilla (NU)
 Import the clonezilla image from the provided USB.
+
 First power down the robot and insert the USB stick wit hthe clonezilla image. Use one of the provided USB B slots for this. Also have a keyboard on hand and connected to the robot.
+
 Power on the robot and press F10 until the boot menu appears. Select the USB drive that you inserted.
+
 Clonezilla should start.
+
 Follow the default setup and select image-disk. 
+
 Continue following the promps until it asks for the image you want to clone. Select one of the images with Noetic in the name.
+
 Follow the rest of the prompts. The cloneing process should take around 10-20 minutes. The robot should reboot or shut down. 
+
 Safely store the USB.
 
 # Repository import

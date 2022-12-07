@@ -76,6 +76,6 @@ The position of the Apriltags will be constantly be tracked and recorded when th
 
 Use the `reset_plot` service with the command `rosservice call /reset_plot`  to clear the recorded data.
 
-Use the `plot` service with the command `rosservice call /plot <plot_name>` to create a csv file with the name <plot_name> that has the x, y, and z displacement of the Apriltag over all time since you've last run the `reset_plot` service. 
+Use the `plot` service with the command `rosservice call /plot <plot_name>` to create a csv file with the name `<plot_name>` that has the x, y, and z displacement of the Apriltag over all time since you've last run the `reset_plot` service. 
 
 The CSV file will appear in the `plots/` folder.

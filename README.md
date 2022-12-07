@@ -24,4 +24,4 @@ This will give you a GUI that you can run walking demos and other actions.
 
 # Action editor
 To create and test new actions for the OP3, you can run the action editior using the command `roslaunch op3_action_editor op3_action_editor.launch`
-This will open up the action editor software where you can create new actions. This is where I created the Humanoid-walking gaits.
+This will open up the action editor software where you can create new actions. This is where I created the Human-walking gaits.

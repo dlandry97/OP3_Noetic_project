@@ -37,12 +37,16 @@ then run the command `roslaunch op3_demo demo.launch`
 
 ## demo GUI
 To run the demo gui, After launching the demo, in a new sourced terminal run `roslaunch op3_gui_demo op3_demo.launch`
+
 This will give you a GUI that you can run walking demos and other actions.
+
 More in depth documentation on this can be found at `https://emanual.robotis.com/docs/en/platform/op3/tutorials/#how-to-execute-gui-program`
 
 # Action editor
 To create and test new actions for the OP3, you can run the action editior using the command `roslaunch op3_action_editor op3_action_editor.launch`
+
 Note: This is meant to be launched alone without any ROS nodes running.
+
 This will open up the action editor software where you can create new actions. This is where I created the Human-walking gaits.
 
 More information on the action editor can be found at `https://emanual.robotis.com/docs/en/platform/op3/tutorials/#how-to-execute-gui-program`

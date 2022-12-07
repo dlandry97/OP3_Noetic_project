@@ -50,3 +50,16 @@ Note: This is meant to be launched alone without any ROS nodes running.
 This will open up the action editor software where you can create new actions. This is where I created the Human-walking gaits.
 
 More information on the action editor can be found at `https://emanual.robotis.com/docs/en/platform/op3/tutorials/#how-to-execute-gui-program`
+
+## Device permissions
+If you are using a fresh OS and Noetic build, you will need to set the device permissions for the dynamixels and camera.
+
+This involves adding profiles to the permission groups.
+
+To do this you will need to run these commands:
+
+`sudo usermod -a -G dialout op3`
+
+`sudo usermod -a -G video op3`
+
+`sudo bash -c 'echo "@op3 - rtprio 99" > /etc/security/limits.d/op3-rtprio.conf'`

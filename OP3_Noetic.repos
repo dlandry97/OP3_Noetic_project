@@ -1,0 +1,57 @@
+repositories:
+  DynamixelSDK:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+    version: master
+  ROBOTIS-Framework:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/ROBOTIS-Framework.git
+    version: master
+  ROBOTIS-Framework-msgs:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/ROBOTIS-Framework-msgs.git
+    version: master
+  ROBOTIS-Math:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/ROBOTIS-Math.git
+    version: master
+  ROBOTIS-OP3-Common_Noetic_1.0:
+    type: git
+    url: git@github.com:dlandry97/ROBOTIS-OP3-Common_Noetic_1.0.git
+    version: master
+  ROBOTIS-OP3-Demo_Noetic_1.0:
+    type: git
+    url: git@github.com:dlandry97/ROBOTIS-OP3-Demo_Noetic_1.0.git
+    version: master
+  ROBOTIS-OP3-Tools_Noetic_1.0:
+    type: git
+    url: git@github.com:dlandry97/ROBOTIS-OP3-Tools_Noetic_1.0.git
+    version: master
+  ROBOTIS-OP3-msgs:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/ROBOTIS-OP3-msgs.git
+    version: master
+  ROBOTIS-OP3_noetic_1.0:
+    type: git
+    url: git@github.com:dlandry97/ROBOTIS-OP3_noetic_1.0.git
+    version: master
+  ROBOTIS-Utility:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/ROBOTIS-Utility.git
+    version: master
+  face_detection_Noetic_1.0:
+    type: git
+    url: git@github.com:ME495-EmbeddedSystems/face_detection_Noetic_1.0.git
+    version: master
+  humanoid_msgs:
+    type: git
+    url: https://github.com/ahornung/humanoid_msgs.git
+    version: master
+  humanoid_navigation_noetic_op3:
+    type: git
+    url: git@github.com:dlandry97/humanoid_navigation_noetic_op3.git
+    version: master
+  orocos_kinematics_dynamics:
+    type: git
+    url: https://github.com/orocos/orocos_kinematics_dynamics.git
+    version: c42c4dc126c7902117a914cbc8a97c8cdfe56d7d

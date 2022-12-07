@@ -63,3 +63,19 @@ To do this you will need to run these commands:
 `sudo usermod -a -G video op3`
 
 `sudo bash -c 'echo "@op3 - rtprio 99" > /etc/security/limits.d/op3-rtprio.conf'`
+
+# Tracking the X and Y displacement using Apriltags
+This package is used as a testbed for tracking the X and Y displacements of the robot for the RoboToe project.
+
+To begin, connect an Intel RealSense d435i to your computer. 
+Source this workspace and run the command `roslaunch testbed intel_cam.launch`
+
+The two main services you will need to use are the `plot` and `reset_plot` services.
+
+The position of the Apriltags will be constantly be tracked and recorded when they are in view.
+
+Use the `reset_plot` service with the command `rosservice call /reset_plot`  to clear the recorded data.
+
+Use the `plot` service with the command `rosservice call /plot <plot_name>` to create a csv file with the name <plot_name> that has the x, y, and z displacement of the Apriltag over all time since you've last run the `reset_plot` service. 
+
+The CSV file will appear in the `plots/` folder.
